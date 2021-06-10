@@ -1,65 +1,60 @@
 'use strict';
 
-let numberOfFilms;
-
 const personalMovieDB = {
-    count: numberOfFilms,
+    count: 0,
     movies: {},
     actors: {},
     genres: [],
-    privat: false
-};
+    privat: false,
+    start: function () {
+        this.count = +prompt('How many movies have you watched?', '');
 
-function start() {
-    numberOfFilms = +prompt('How many movies have you watched?', '');
+        while (this.count == '' || this.count == null || isNaN(this.count)) {
+            this.count = +prompt('How many movies have you watched?', '');
+        }
+    },
+    rememberMyFilms: function () {
+        for (let i = 0; i < this.count; i++) {
+            const a = prompt('One of the last watched movies?', ''),
+                b = prompt('How can you rate it?', '');
 
-    while (numberOfFilms == '' || numberOfFilms == null || isNaN(numberOfFilms)) {
-        numberOfFilms = +prompt('How many movies have you watched?', '');
-    }
-}
-
-function rememberMyFilms(numberOfFilms) {
-    for (let i = 0; i < numberOfFilms; i++) {
-        const a = prompt('One of the last watched movies?', ''),
-            b = prompt('How can you rate it?', '');
-
-        if (a != null && b != null && a != '' && b != '' && a.length < 50) {
-            personalMovieDB.movies[a] = b;
+            if (a != null && b != null && a != '' && b != '' && a.length < 50) {
+                this.movies[a] = b;
+            } else {
+                console.log('Error');
+                --i;
+            }
+        }
+    },
+    detectPersonalLevel: function () {
+        if (this.count < 10) {
+            console.log('Very few movies');
+        } else if (this.count < 30 && this.count > 10) {
+            console.log('Not bad');
+        } else if (this.count > 30) {
+            console.log('Awesome');
         } else {
             console.log('Error');
-            --i;
         }
+    },
+    showMyDB: function () {
+        if (!this.privat) {
+            console.log(this);
+        }
+    },
+    writeYourGenres: function () {
+        let genres = prompt('Enter your favourite genres separated with comma').toLowerCase;
+        while (genres == null || genres == '') {
+            genres = prompt('Enter your favourite genres separated with comma');
+        }
+        this.genres = genres.split(', ');
+        this.genres.sort();
+        this.genres.forEach((element, index) => {
+            console.log('a[' + index + 1 + '] = ' + element);
+        });
+    },
+    toggleVisibleMyDB: function () {
+        this.privat = !this.privat;
     }
-}
+};
 
-function detectPersonalLevel() {
-    if (personalMovieDB.count < 10) {
-        console.log('Very few movies');
-    } else if (personalMovieDB.count < 30 && personalMovieDB.count > 10) {
-        console.log('Not bad');
-    } else if (personalMovieDB.count > 30) {
-        console.log('Awesome');
-    } else {
-        console.log('Error');
-    }
-}
-
-function showMyDB() {
-    if (!personalMovieDB.privat) console.log(personalMovieDB);
-}
-
-function writeYourGenres() {
-    for (let i = 0; i < 3; i++) {
-        personalMovieDB.genres[i] = prompt(`What is your favourite movie genre ${i+1}`, '');
-    }
-}
-
-start();
-
-rememberMyFilms(numberOfFilms);
-
-detectPersonalLevel();
-
-writeYourGenres();
-
-showMyDB();
