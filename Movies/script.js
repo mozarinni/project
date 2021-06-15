@@ -57,4 +57,3 @@ const personalMovieDB = {
         this.privat = !this.privat;
     }
 };
-
