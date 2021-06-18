@@ -95,8 +95,7 @@ window.addEventListener('DOMContentLoaded', () => {
     //Modal
 
     const modalTrigger = document.querySelectorAll('[data-modal]'),
-        modal = document.querySelector('.modal'),
-        modalCloseBtn = document.querySelector('[data-close]');
+        modal = document.querySelector('.modal');
 
     modalTrigger.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -117,10 +116,8 @@ window.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = '';
     }
 
-    modalCloseBtn.addEventListener('click', closeModal);
-
     modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
+        if (e.target === modal || e.target.getAttribute('data-close') == '') {
             closeModal();
         }
     });
@@ -131,48 +128,48 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-// const modalTimerId = setTimeout(openModal, 5000);
+    const modalTimerId = setTimeout(openModal, 50000);
 
-function showModalByScroll(){
-    if(window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight){
+    function showModalByScroll() {
+        if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
             openModal();
             window.removeEventListener('scroll', showModalByScroll);
-        }    
-}
-
-window.addEventListener('scroll', showModalByScroll);
-
-});
-
-
-// Classes for menu cards
-const menuItem = document.querySelector('.menu__item');
-
-class MenuCard{
-    constructor(src, alt, title, descr, price, parentSelector, ...classes){
-        this.src = src;
-        this.alt = alt;
-        this.title = title;
-        this.descr = descr;
-        this.price = price;
-        this.classes = classes;
-        this.parent = document.querySelector(parentSelector);
-        this.rate = 2.5;
-        this.changeToUAH();
-    }
-
-    changeToUAH(){
-        this.price = this.price * this.rate;
-    }
-
-    render(){
-        const element = document.createElement('div');
-        if(this.classes.length === 0){
-            this.element = 'menu__item';
-            element.classList.add(this.element);
         }
-        this.classes.forEach(className => {element.classList.add(className);});
-        element.innerHTML = `
+    }
+
+    window.addEventListener('scroll', showModalByScroll);
+
+
+    // Classes for menu cards
+    const menuItem = document.querySelector('.menu__item');
+
+    class MenuCard {
+        constructor(src, alt, title, descr, price, parentSelector, ...classes) {
+            this.src = src;
+            this.alt = alt;
+            this.title = title;
+            this.descr = descr;
+            this.price = price;
+            this.classes = classes;
+            this.parent = document.querySelector(parentSelector);
+            this.rate = 2.5;
+            this.changeToBYN();
+        }
+
+        changeToBYN() {
+            this.price = this.price * this.rate;
+        }
+
+        render() {
+            const element = document.createElement('div');
+            if (this.classes.length === 0) {
+                this.element = 'menu__item';
+                element.classList.add(this.element);
+            }
+            this.classes.forEach(className => {
+                element.classList.add(className);
+            });
+            element.innerHTML = `
             <img src=${this.src} alt=${this.alt}>
             <h3 class="menu__item-subtitle">${this.title}</h3>
             <div class="menu__item-descr">${this.descr}</div>
@@ -181,34 +178,174 @@ class MenuCard{
                 <div class="menu__item-cost">Цена:</div>
                 <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
             </div>`;
-        this.parent.append(element);
+            this.parent.append(element);
+        }
     }
-}
 
-new MenuCard(
-    "img/tabs/vegy.jpg",
-    "vegy",
-    'Меню "Фитнес"',
-    'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
-    14,    
-    '.menu .menu__field .container'
-).render();
+    new MenuCard(
+        "img/tabs/vegy.jpg",
+        "vegy",
+        'Меню "Фитнес"',
+        'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
+        14,
+        '.menu .menu__field .container'
+    ).render();
 
-new MenuCard(
-    "img/tabs/elite.jpg",
-    "elite",
-    'Меню “Премиум”',
-    'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
-    18,    
-    '.menu .menu__field .container'
-).render();
+    new MenuCard(
+        "img/tabs/elite.jpg",
+        "elite",
+        'Меню “Премиум”',
+        'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
+        18,
+        '.menu .menu__field .container'
+    ).render();
 
-new MenuCard(
-    "img/tabs/post.jpg",
-    "post",
-    'Меню "Постное"',
-    'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
-    12,    
-    '.menu .menu__field .container'
-).render();
+    new MenuCard(
+        "img/tabs/post.jpg",
+        "post",
+        'Меню "Постное"',
+        'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
+        12,
+        '.menu .menu__field .container'
+    ).render();
+
+    const forms = document.querySelectorAll('form');
+
+    const message = {
+        loading: 'img/form/spinner.svg',
+        success: 'Thank you. We are going to reach you soon',
+        failure: 'Something went wrong...'
+    };
+
+    forms.forEach(item => {
+        postData(item);
+    });
+
+    function postData(form) {
+        form.addEventListener('submit', (e) => {
+
+            // const params = "text=stuff";
+            e.preventDefault();
+
+            const statusMessage = document.createElement('img');
+            statusMessage.src = message.loading;
+            statusMessage.style.cssText = `
+                display: block;
+                margin: 0 auto;
+            `;
+            
+            form.insertAdjacentElement('afterend', statusMessage);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'http://localhost:5000', true);
+
+            request.setRequestHeader("Content-type", "application/json");
+            const formData = new FormData(form);
+
+            const object = {};
+            formData.forEach(function(value, key){
+                object[key] = value;
+            });
+
+            const json = JSON.stringify(object);
+
+            request.send(json);
+
+            request.addEventListener('load', () => {
+                if (request.status === 200) {
+                    console.log(request.response);
+                    showThanksModal(message.success);
+                    form.reset();
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 2000);
+                    statusMessage.remove();
+                } else {
+                    showThanksModal(message.failure);
+                }
+            });
+        });
+    }
+
+    function showThanksModal(message) {
+        const prevModalDialog = document.querySelector('.modal__dialog');
+
+        prevModalDialog.classList.add('hide');
+        openModal();
+
+        const thanksModal = document.createElement('div');
+        thanksModal.classList.add('modal__dialog');
+        thanksModal.innerHTML = `
+        <div class="modal__content">
+        <div class="modal_close" data-close>×</div>
+        <div class="modal__title">${message}</div>
+        </div>
+        `;
+
+        document.querySelector('.modal').append(thanksModal);
+        setTimeout(() => {
+            thanksModal.remove();
+            prevModalDialog.classList.add('show');
+            prevModalDialog.classList.remove('hide');
+            closeModal();
+        }, 4000);
+    }
+
+    fetch('https://jsonplaceholder.typicode.com/todos/1')
+    .then(response => response.json())
+    .then(json => console.log(json));
+
+});
+
+// 'use strict';
+
+// console.log('Data request...');
+
+// const req = new Promise(function(resolve, reject){
+//     setTimeout(() => {
+//         console.log('Data prepare...');
+
+//         const product = {
+//             name: 'TV',
+//             price: 2000
+//         };
+//         resolve(product);
+//     }, 2000);
+// });
+
+// req.then((product) =>{
+
+//     return new Promise((resolve, reject) => {
+//         setTimeout(() => {
+//             product.status = 'order';
+//             resolve(product);
+//         }, 2000);
+//     }).then(data => {
+//         data.modify = true;
+//         return data;
+//     }).then(data => {
+//         console.log(data);
+//     }).catch(() => {
+//         console.error('Error occured');
+//     }).finally(() => {
+//         console.log('Finally');
+//     });
+
+// });
+
+// const test = time => {
+//     return new Promise(resolve => {
+//         setTimeout(() => resolve(), time);
+//     });
+// };
+
+// Promise.all([test(1000), test(2000)]).then(() => {
+//     console.log("All");
+// });
+
+// Promise.race([test(1000), test(2000)]).then(() => {
+//     console.log("Race");
+// });
+
+// 'use strict';
 
