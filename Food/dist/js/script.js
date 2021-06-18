@@ -224,7 +224,6 @@ window.addEventListener('DOMContentLoaded', () => {
     function postData(form) {
         form.addEventListener('submit', (e) => {
 
-            // const params = "text=stuff";
             e.preventDefault();
 
             const statusMessage = document.createElement('img');
@@ -236,10 +235,9 @@ window.addEventListener('DOMContentLoaded', () => {
             
             form.insertAdjacentElement('afterend', statusMessage);
 
-            const request = new XMLHttpRequest();
-            request.open('POST', 'http://localhost:5000', true);
+            // const request = new XMLHttpRequest();
+            // request.open('POST', 'http://localhost:5000', true);
 
-            request.setRequestHeader("Content-type", "application/json");
             const formData = new FormData(form);
 
             const object = {};
@@ -247,23 +245,26 @@ window.addEventListener('DOMContentLoaded', () => {
                 object[key] = value;
             });
 
-            const json = JSON.stringify(object);
+            fetch('index.js',{
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json'
+                },  
+                body: JSON.stringify(object)
+                
+            })
+            .then(data => data.text())
+            .then(data => {
+                console.log(data.response);
+                showThanksModal(message.success);
+                form.reset();
+                statusMessage.remove();
+            })
+            .catch(() => {
+                showThanksModal(message.failure);
+            })
+            .finally(() => form.reset());
 
-            request.send(json);
-
-            request.addEventListener('load', () => {
-                if (request.status === 200) {
-                    console.log(request.response);
-                    showThanksModal(message.success);
-                    form.reset();
-                    setTimeout(() => {
-                        statusMessage.remove();
-                    }, 2000);
-                    statusMessage.remove();
-                } else {
-                    showThanksModal(message.failure);
-                }
-            });
         });
     }
 
@@ -291,61 +292,5 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 4000);
     }
 
-    fetch('https://jsonplaceholder.typicode.com/todos/1')
-    .then(response => response.json())
-    .then(json => console.log(json));
-
 });
-
-// 'use strict';
-
-// console.log('Data request...');
-
-// const req = new Promise(function(resolve, reject){
-//     setTimeout(() => {
-//         console.log('Data prepare...');
-
-//         const product = {
-//             name: 'TV',
-//             price: 2000
-//         };
-//         resolve(product);
-//     }, 2000);
-// });
-
-// req.then((product) =>{
-
-//     return new Promise((resolve, reject) => {
-//         setTimeout(() => {
-//             product.status = 'order';
-//             resolve(product);
-//         }, 2000);
-//     }).then(data => {
-//         data.modify = true;
-//         return data;
-//     }).then(data => {
-//         console.log(data);
-//     }).catch(() => {
-//         console.error('Error occured');
-//     }).finally(() => {
-//         console.log('Finally');
-//     });
-
-// });
-
-// const test = time => {
-//     return new Promise(resolve => {
-//         setTimeout(() => resolve(), time);
-//     });
-// };
-
-// Promise.all([test(1000), test(2000)]).then(() => {
-//     console.log("All");
-// });
-
-// Promise.race([test(1000), test(2000)]).then(() => {
-//     console.log("Race");
-// });
-
-// 'use strict';
 
