@@ -24,9 +24,11 @@
     "gulp-postcss": "^8.0.0",
     "gulp-remove": "^1.3.2",
     "gulp-sass": "^4.0.2",
+    "json-server": "^0.16.3",
+    "php.validate.executablePath": "c:/php/php.exe",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10",
-    "webpack-stream": "^5.2.1",
-    "php.validate.executablePath": "c:/php/php.exe"
-  }
+    "webpack-stream": "^5.2.1"
+  },
+  "dependencies": {}
 }
