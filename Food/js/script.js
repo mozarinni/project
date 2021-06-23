@@ -141,67 +141,27 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     // Classes for menu cards
-    const menuItem = document.querySelector('.menu__item');
-
-    // class MenuCard {
-    //     constructor(src, alt, title, descr, price, parentSelector, ...classes) {
-    //         this.src = src;
-    //         this.alt = alt;
-    //         this.title = title;
-    //         this.descr = descr;
-    //         this.price = price;
-    //         this.classes = classes;
-    //         this.parent = document.querySelector(parentSelector);
-    //         this.rate = 2.5;
-    //         this.changeToBYN();
-    //     }
-
-    //     changeToBYN() {
-    //         this.price = this.price * this.rate;
-    //     }
-
-    //     render() {
-    //         const element = document.createElement('div');
-    //         if (this.classes.length === 0) {
-    //             this.element = 'menu__item';
-    //             element.classList.add(this.element);
-    //         }
-    //         this.classes.forEach(className => {
-    //             element.classList.add(className);
-    //         });
-    //         element.innerHTML = `
-    //         <img src=${this.src} alt=${this.alt}>
-    //         <h3 class="menu__item-subtitle">${this.title}</h3>
-    //         <div class="menu__item-descr">${this.descr}</div>
-    //         <div class="menu__item-divider"></div>
-    //         <div class="menu__item-price">
-    //             <div class="menu__item-cost">Цена:</div>
-    //             <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
-    //         </div>`;
-    //         this.parent.append(element);
-    //     }
-    // }
+    // const menuItem = document.querySelector('.menu__item');
 
     const getResource = async (url) => {
         const res = await fetch(url);
-          if (!res.ok){
+        if (!res.ok) {
             throw new Error(`Could not fetch ${url}, status ${res.status}`);
-            }
-    return await res.json();
+        }
+        return await res.json();
     };
-
-    // getResource('http://localhost:3000/menu')
-    // .then(data => {
-    //     data.forEach(({img, altimg, title, descr, price}) => {
-    //         new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
-    //     });
-    // });
 
     getResource('http://localhost:3000/menu')
         .then(data => createCard(data));
 
-    const createCard = function(data) {
-        data.forEach(({img, altimg, title, descr, price}) => {
+    const createCard = function (data) {
+        data.forEach(({
+            img,
+            altimg,
+            title,
+            descr,
+            price
+        }) => {
             const element = document.createElement('div');
 
             element.classList.add('menu__item');
@@ -232,14 +192,14 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     const postData = async (url, data) => {
-        const res = await fetch(url, {                 
+        const res = await fetch(url, {
             method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },  
-        body: data
-    });
-    return await res.json();
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: data
+        });
+        return await res.json();
     };
 
     function bindPostData(form) {
@@ -253,7 +213,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 display: block;
                 margin: 0 auto;
             `;
-            
+
             form.insertAdjacentElement('afterend', statusMessage);
 
             const formData = new FormData(form);
@@ -261,16 +221,16 @@ window.addEventListener('DOMContentLoaded', () => {
             const json = JSON.stringify(Object.fromEntries(formData.entries));
 
             postData('http://localhost:3000/requests', json)
-            .then(data => {
-                console.log(data.response);
-                showThanksModal(message.success);
-                form.reset();
-                statusMessage.remove();
-            })
-            .catch(() => {
-                showThanksModal(message.failure);
-            })
-            .finally(() => form.reset());
+                .then(data => {
+                    console.log(data.response);
+                    showThanksModal(message.success);
+                    form.reset();
+                    statusMessage.remove();
+                })
+                .catch(() => {
+                    showThanksModal(message.failure);
+                })
+                .finally(() => form.reset());
 
         });
     }
@@ -302,51 +262,76 @@ window.addEventListener('DOMContentLoaded', () => {
     //Slider
 
     const slides = document.querySelectorAll('.offer__slide'),
-          prev = document.querySelector('.offer__slider-prev'),
-          next = document.querySelector('.offer__slider-next'),
-          total = document.querySelector('#total'),
-          current = document.querySelector('#current');
+        prev = document.querySelector('.offer__slider-prev'),
+        next = document.querySelector('.offer__slider-next'),
+        total = document.querySelector('#total'),
+        current = document.querySelector('#current'),
+        slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+        slidesField = document.querySelector('.offer__slider-inner'),
+        width = window.getComputedStyle(slidesWrapper).width;
 
     let slideIndex = 1;
+    let offset = 0;
 
-    showSlides(slideIndex);
-
-    if(slides.length < 10){
-        total.textContent = `${slides.length}`;
+    if (slides.length < 10) {
+        total.textContent = `0${slides.length}`;
+        current.textContent = `0${slideIndex}`;
     } else {
         total.textContent = slides.length;
+        current.textContent = slideIndex;
     }
 
-    function showSlides(n){
-        if(n > slides.length){
+    slidesField.style.width = 100 * slides.length + '%';
+    slidesField.style.display = 'flex';
+    slidesField.style.transition = '0.5s all';
+
+    slidesWrapper.style.overflow = 'hidden';
+
+    slides.forEach(slide => {
+        slide.style.width = width;
+    });
+
+    next.addEventListener('click', () => {
+        if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+            offset = 0;
+        } else {
+            offset += +width.slice(0, width.length - 2);
+        }
+        slidesField.style.transform = `translateX(-${offset}px)`;
+
+        if (slideIndex == slides.length) {
             slideIndex = 1;
+        } else {
+            slideIndex++;
         }
-        if(n < 1){
-            slideIndex = slides.length;
-        }
 
-        slides.forEach(item => item.style.display = 'none');
-
-        slides[slideIndex - 1].style.display = 'block';
-
-        if(slides.length < 10){
-            current.textContent = `${slideIndex}`;
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
         } else {
             current.textContent = slideIndex;
         }
-    }
-
-    function plusSlides(n){
-        showSlides(slideIndex += n);
-    }
-
-    prev.addEventListener('click', () => {
-        plusSlides(-1);
     });
 
+    prev.addEventListener('click', () => {
+        if (offset == 0) {
+            offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+        } else {
+            offset -= +width.slice(0, width.length - 2);
+        }
+        slidesField.style.transform = `translateX(-${offset}px)`;
 
-    next.addEventListener('click', () => {
-        plusSlides(1);
+        if (slideIndex == 1) {
+            slideIndex = slides.length;
+        } else {
+            slideIndex--;
+        }
+
+        if (slides.length < 10) {
+            current.textContent = `0${slideIndex}`;
+        } else {
+            current.textContent = slideIndex;
+        }
+
     });
 
 });
