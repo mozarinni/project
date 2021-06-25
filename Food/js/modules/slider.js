@@ -1,15 +1,18 @@
-function slider() {
-    
+function slider({container, slide, nextArrow, prevArrow, totalCounter, currentCounter, wrapper, field}) {
+
     //Slider
 
-    const slides = document.querySelectorAll('.offer__slide'),
-        slider = document.querySelector('.offer__slider'),
-        prev = document.querySelector('.offer__slider-prev'),
-        next = document.querySelector('.offer__slider-next'),
-        total = document.querySelector('#total'),
-        current = document.querySelector('#current'),
-        slidesWrapper = document.querySelector('.offer__slider-wrapper'),
-        slidesField = document.querySelector('.offer__slider-inner'),
+    let slideIndex = 1;
+    let offset = 0;
+
+    const slides = document.querySelectorAll(slide),
+        slider = document.querySelector(container),
+        prev = document.querySelector(prevArrow),
+        next = document.querySelector(nextArrow),
+        total = document.querySelector(totalCounter),
+        current = document.querySelector(currentCounter),
+        slidesWrapper = document.querySelector(wrapper),
+        slidesField = document.querySelector(field),
         width = window.getComputedStyle(slidesWrapper).width;
 
     const setCurrentIndex = (slideIndex, slides, current) => {
@@ -28,9 +31,6 @@ function slider() {
     const deleteNotDigits = (str) => {
         return +str.replace(/\D/g, '');
     };
-
-    let slideIndex = 1;
-    let offset = 0;
 
     if (slides.length < 10) {
         total.textContent = `0${slides.length}`;
@@ -146,4 +146,4 @@ function slider() {
 
 }
 
-module.exports = slider;
+export default slider;

@@ -110,4 +110,4 @@ function calculator(){
     getDynamicInfo('#age');
 }
 
-module.exports = calculator;
+export default calculator;
