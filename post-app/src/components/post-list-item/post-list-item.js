@@ -25,7 +25,7 @@ export default class PostListItem extends Component {
     }
 
     render() {
-        const {label} = this.props;
+        const {label, onDelete, onToggleImportant, onToggleLiked} = this.props;
         const {important, like} = this.state;
         let classNames = "app-list-item d-flex justify-content-between";
 
@@ -52,7 +52,8 @@ export default class PostListItem extends Component {
                     </button>
                     <button 
                         type="button"
-                        className="btn-trash btm-sm">
+                        className="btn-trash btm-sm"
+                        onClick={onDelete}>
                         <i className="fa fa-trash-o"></i>
                     </button>
                     <i className="fa fa-heart"></i>
