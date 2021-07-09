@@ -43,7 +43,7 @@ export default class App extends Component {
     addItem(body){
         const newItem ={
             label: body,
-            importatnt: false,
+            important: false,
             id: this.maxId++
         }
         this.setState(({data}) => {

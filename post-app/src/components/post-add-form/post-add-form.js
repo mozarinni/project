@@ -29,7 +29,7 @@ export default class PostAddForm extends Component {
         return (
             <form 
                 className="bottom-panel d-flex"
-                onSubmit={this.onSubmit}>
+                onSubmit={this.onSubmit}> 
                 <input
                     type="text"
                     placeholder="About what are you thinking right now?"
