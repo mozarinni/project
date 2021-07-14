@@ -3,13 +3,20 @@ import {Col, Row, Container, Button} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
 import ErrorMessage from "../errorMessage";
-import CharacterPage from "../characterPage";
+import CharacterPage from "../pages/characterPage";
+import BookPage from "../pages/bookPage";
+import HousePage from "../pages/housePage";
+import ItemList from '../itemList';
+import CharDetails from '../itemDetails';
+import gotService from '../../services/gotService.js'
 
 import 'bootstrap/dist/css/bootstrap.css'
 
 
 export default class App extends Component {
     
+    gotService = new gotService();
+
     state = {
         showRandomChar: true,
         error: false
@@ -40,6 +47,8 @@ export default class App extends Component {
                         </Col>
                     </Row>
                     <CharacterPage/>
+                    <BookPage/>
+                    <HousePage/>
                 </Container>
             </>
         )
