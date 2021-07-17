@@ -38,30 +38,13 @@ export default class ItemDetails extends Component {
             return;
         }
 
-        switch(this.props.page){
-            case 'character':
-                this.gotService.getCharacter(itemId)
-                .then((item) => {
-                    this.setState({item})    
-                })
-                break;
-            case 'book':
-                this.gotService.getBook(itemId)
-                .then((item) => {
-                    this.setState({item})    
-                })
-                break;
-            case 'house':
-                this.gotService.getHouse(itemId)
-                .then((item) => {
-                    this.setState({item})    
-                })
-                break;
-            default:
-                break;
-        }
-           
+        console.log(itemId);
 
+        this.props.getData(itemId)
+            .then((item) => {
+                this.setState({item})    
+            })
+                
     }
 
     render(){

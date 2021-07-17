@@ -1,0 +1,35 @@
+.header-list {
+    width: 400px;
+}
+
+.header-list {
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+li {
+    list-style: none;
+    float: right;
+    text-decoration: none;
+}
+
+a{
+  text-decoration: none;
+}
+
+.header{
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+}
+

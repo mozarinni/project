@@ -1,16 +1,16 @@
 import React, {Component} from "react";
-import ItemList from '../../itemList';
-import ItemDetails, {Field} from '../../itemDetails/itemDetails';
-import ErrorMessage from "../../errorMessage";
-import gotService from '../../../services/gotService.js';
-import RowBlock from "../../rowBlock";
+import ItemList from '../itemList';
+import ItemDetails, {Field} from '../itemDetails/itemDetails';
+import ErrorMessage from "../errorMessage";
+import gotService from '../../services/gotService.js';
+import RowBlock from "../rowBlock";
 
 export default class housePage extends Component{
 
     gotService = new gotService();
 
     state = {
-        selectedHouse: 1,
+        selectedHouse: null,
         error: false
     }
 
@@ -41,7 +41,9 @@ export default class housePage extends Component{
         )
 
         const bookDetails = (
-            <ItemDetails itemId={this.state.selectedHouse} page = "house">
+            <ItemDetails 
+                itemId={this.state.selectedHouse} 
+                getData = {this.gotService.getHouse}>
                 <Field field='region' label='Region' />
                 <Field field='words' label='Words' />
                 <Field field='titles' label='Titles' />
